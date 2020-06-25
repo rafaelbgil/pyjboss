@@ -3,11 +3,12 @@ from .namespacedclient import NamespacedClient
 
 class DatasourcePy(NamespacedClient):
     ''' 
-    Class used to management the datasources
+    Get information about datasources and xa-datasources
 
     '''
+
     def normalize_datasource(self, datasource_type='datasource'):
-        #Method utilized internaly only, that is reponsible to format output from datasource and xa-datasource
+        # Method used internaly only, that is reponsible to format output from datasource and xa-datasource
         if datasource_type == 'datasource':
             datasource_type = 'data-source'
         elif datasource_type == 'xa-datasource':
@@ -15,6 +16,19 @@ class DatasourcePy(NamespacedClient):
         return datasource_type
 
     def list(self, datasource_type='datasource'):
+        '''
+        Get a list of datasources by especific datasource_type
+
+        Parameters
+        ----------
+        param: datasource_type: The type of datasource, that can be datasource or xa-datasource.
+            if not defined "datasource" is the default value.
+
+        Returns
+        -------
+        list
+            A list with the datasources
+        '''
         payload = {
             "address": [{
                 "subsystem": "datasources"
@@ -28,7 +42,23 @@ class DatasourcePy(NamespacedClient):
             payload=payload)
         return return_data
 
-    def get(self, datasource_type, datasource_name):
+    def get(self, datasource_name, datasource_type='datasource'):
+        '''
+        Get information about a datasource
+
+        Parameters
+        ----------
+        param: datasource_name: The name of datasource or xa-datasoruce.
+        param: datasource_type  The type of datasource can be datasource or xa-datasource
+            if not defined "datasource" is the default value.
+
+        Returns
+        -------
+        dictionary
+            Return a dictionary with information about the datasource.
+        
+        For more information, can be usefull enable statistics in the datasources.
+        '''
         payload = {
             "address": [{
                 "subsystem": "datasources"

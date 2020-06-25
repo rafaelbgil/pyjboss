@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyjboss", 
-    version="0.0.1",
+    version="0.0.4",
     license="GNU General Public License v3.0",
     author="Rafael Benites Gil",
     author_email="rafaelbgil@gmail.com",

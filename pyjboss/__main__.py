@@ -2,15 +2,17 @@ from __future__ import absolute_import
 import json
 import argparse
 
-#Metodo responsible for format output to user
+# Metodo responsible for format output to user
+
+
 def print_pretty(command_return):
     transform_json = json.dumps(command_return, indent=2)
     print(transform_json)
-    
+
 
 class main():
     from . import PyJboss
-     
+
     # main command
     description = 'This package can be used to call the jbossapi by http protocol and return values'
     main_parse = argparse.ArgumentParser(prog='jbosspy',
@@ -38,9 +40,10 @@ class main():
     ejb_parse = main_subparse.add_parser(name="ejb",
                                          help='Manage ejb resources',
                                          description="Call the ejb resources")
-    ejb_parse.add_argument("--thread-pool-name",
-                           required=True,
-                           help="Ejb thread pool name")
+    ejb_parse.add_argument(
+        '--list-thread-pools', help="Return a list of thread pools", action="store_true")
+    ejb_parse.add_argument("--get-thread-pool",
+                           help="Get information about an thread pool")
     ejb_parse.set_defaults(command="ejb")
 
     # parse message command
@@ -90,8 +93,8 @@ class main():
 
     # return main_parse
     parse_return = main_parse.parse_args()
-    
-    #create a PyJboss object
+
+    # create a PyJboss object
     obJboss = PyJboss(controller=parse_return.controller,
                       user=parse_return.user,
                       password=parse_return.password,
@@ -100,7 +103,12 @@ class main():
 
     # process command ejb
     if parse_return.command == 'ejb':
-        print_pretty(command_return=obJboss.ejb.get_thread_pool(thread_pool_name=parse_return.thread_pool_name))
+        if parse_return.list_thread_pools:
+            print_pretty(command_return=obJboss.ejb.list_thread_pools())
+        else:
+            print_pretty(command_return=obJboss.ejb.get_thread_pool(
+                thread_pool_name=parse_return.get_thread_pool))
+
     # process command message
     elif parse_return.command == 'message':
         if parse_return.queue_name:
@@ -117,7 +125,8 @@ class main():
     # process command datasource
     elif parse_return.command == 'datasource':
         if parse_return.list:
-            print_pretty(obJboss.datasource.list(datasource_type=parse_return.list))
+            print_pretty(obJboss.datasource.list(
+                datasource_type=parse_return.list))
         elif parse_return.datasource:
             print_pretty(
                 obJboss.datasource.get(
