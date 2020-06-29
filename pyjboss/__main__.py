@@ -111,7 +111,13 @@ class main():
 
     # process command message
     elif parse_return.command == 'message':
-        if parse_return.queue_name:
+        if parse_return.list == 'queue':
+            print_pretty(obJboss.message.list(
+                message_server=parse_return.message_server, type_message='queue'))
+        elif parse_return.list == 'topic':
+            print_pretty(obJboss.message.list(
+                message_server=parse_return.message_server, type_message='topic'))
+        elif parse_return.queue_name:
             print_pretty(
                 obJboss.message.get(name_resource=parse_return.queue_name,
                                     message_server=parse_return.message_server,
