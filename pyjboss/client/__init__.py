@@ -3,6 +3,7 @@ from .datasource import DatasourcePy
 from .message import MessagePy
 from .ejb import EjbPy
 from .utils import UtilsPy
+from .logging import LoggingPy
 
 import logging
 
@@ -47,3 +48,4 @@ class PyJboss(object):
         self.message = MessagePy(self)
         self.ejb = EjbPy(self)
         self.utils = UtilsPy(self)
+        self.logging = LoggingPy(self)

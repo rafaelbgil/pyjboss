@@ -91,6 +91,19 @@ class main():
                              )
     utils_parse.set_defaults(command="utils")
 
+    # parse logging command
+    logging_parse = main_subparse.add_parser(
+        name="logging", help="Get information about logs and read a log file")
+    logging_parse.add_argument(
+        '--list', help="Obtain a list of log files", action='store_true', required=False)
+    logging_parse.add_argument(
+        '--read-logfile', help="Read a log file", required=False)
+    logging_parse.add_argument(
+        '--lines', help="Amount of lines to read of log file", required=False)
+    logging_parse.add_argument(
+        '--tail', help="If used the read of log file will be starting in the end of file", required=False, action='store_true')
+    utils_parse.set_defaults(command="logging")
+
     # return main_parse
     parse_return = main_parse.parse_args()
 
@@ -138,7 +151,34 @@ class main():
                 obJboss.datasource.get(
                     datasource_type='datasource',
                     datasource_name=parse_return.datasource))
+        elif parse_return.xa_datasource:
+            print_pretty(
+                obJboss.datasource.get(
+                    datasource_type='xa-datasource',
+                    datasource_name=parse_return.datasource))
     # process command utils
     elif parse_return.command == 'utils':
         if parse_return.get_memory_info == True:
             print_pretty(obJboss.utils.get_memory_info())
+    # process command logging
+    elif parse_return.command == 'logging':
+        print(parse_return)
+        if parse_return.list == True:
+            print_pretty(obJboss.logging.list())
+        if parse_return.read_logfile:
+            if parse_return.lines == None:
+                op_log_lines = 10
+            else:
+                op_log_lines = parse_return.lines
+
+            if parse_return.tail == True:
+                op_log_tail = True
+            else:
+                op_log_tail = False
+            return_logfile = obJboss.logging.read_log(
+                filename=parse_return.read_logfile, lines=op_log_lines, tail=op_log_tail)
+            if return_logfile:
+                for line_log in return_logfile:
+                    print(line_log)
+            else:
+                print("File not found or can't be read.")
