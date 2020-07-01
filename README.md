@@ -1,3 +1,5 @@
+![PyPI - Status](https://img.shields.io/pypi/status/pyjboss)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyjboss)
 # pyjboss
 Client for jboss and Wildfly API written in python
 
