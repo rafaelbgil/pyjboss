@@ -4,6 +4,7 @@ from .message import MessagePy
 from .ejb import EjbPy
 from .utils import UtilsPy
 from .logging import LoggingPy
+from .deployment import DeploymentPy
 
 import logging
 
@@ -49,3 +50,4 @@ class PyJboss(object):
         self.ejb = EjbPy(self)
         self.utils = UtilsPy(self)
         self.logging = LoggingPy(self)
+        self.deployment = DeploymentPy(self)

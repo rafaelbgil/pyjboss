@@ -124,5 +124,7 @@ This module are in the beginning of development and has the features bellow.
 * Message: Get information about messages in a queue or a topic as well list queues or topics.
 * Ejb: Get information about thread pools ejb.
 * Utils: Get information about jvm memory.
+* Logging: Get information about log's file and permit obtain lines from log.
+* Deployment: Get information about packages deployed.
 
 

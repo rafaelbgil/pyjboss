@@ -102,7 +102,24 @@ class main():
         '--lines', help="Amount of lines to read of log file", required=False)
     logging_parse.add_argument(
         '--tail', help="If used the read of log file will be starting in the end of file", required=False, action='store_true')
-    utils_parse.set_defaults(command="logging")
+    logging_parse.set_defaults(command="logging")
+
+    # parse deployment command
+    deployment_parse = main_subparse.add_parser(
+        name="deployment", help="Get information about deployed packages")
+    deployment_parse.add_argument(
+        '--list', help="Obtain a list of packages deployed", action='store_true', required=False)
+    deployment_parse.add_argument(
+        '--get-undertow-information', help="Get undertow information about the package deployed or sub-deployed", action='store_true', required=False)
+    deployment_parse.add_argument(
+        '--package', help="A filename of a deployed package with an extesion war, ear or jar")
+    deployment_parse.add_argument(
+        '--sub-package', help="A filename of a sub-deployed  with an extesion war, ear or jar", required=False)
+    deployment_parse.set_defaults(command="deployment")
+
+    '''
+    Return 
+    '''
 
     # return main_parse
     parse_return = main_parse.parse_args()
@@ -162,7 +179,6 @@ class main():
             print_pretty(obJboss.utils.get_memory_info())
     # process command logging
     elif parse_return.command == 'logging':
-        print(parse_return)
         if parse_return.list == True:
             print_pretty(obJboss.logging.list())
         if parse_return.read_logfile:
@@ -182,3 +198,11 @@ class main():
                     print(line_log)
             else:
                 print("File not found or can't be read.")
+
+    # process command deployment
+    elif parse_return.command == 'deployment':
+        if parse_return.list:
+            print_pretty(obJboss.deployment.list())
+        elif parse_return.get_undertow_information:
+            print_pretty(obJboss.deployment.get_undertow_information(
+                deployment=parse_return.package, sub_deployment=parse_return.sub_package))
